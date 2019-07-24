@@ -2,26 +2,28 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 #define FIL 7
 #define COL 14
 
 int aleatorio(int, int);
+char letrasAleatorias(int);
 void limpiar();
-
 void llenarMapa(char [FIL][COL]);
 void mostrarMapa(char [FIL][COL]);
 void asignarPosiciones(char [FIL][COL], int *, int *);
 void moverPosicion(char [FIL][COL], int *, int *);
+void acomodarMapa(char [FIL][COL]);
 
 int main() {
 
 	limpiar();
 	int i;
-	char mapa[FIL][COL];
+	/*char mapa[FIL][COL];
 
 	llenarMapa(mapa);
-
+  //acomodarMapa(mapa);
 	// Posicion incial, aleatorio para las filas
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
@@ -30,8 +32,11 @@ int main() {
 		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas);
 	}
-
-	mostrarMapa(mapa);
+  acomodarMapa(mapa);
+	mostrarMapa(mapa);*/
+	for (i = 0; i < 11; i++) {
+		printf("%d",aleatorio(1,4));
+	}
 
 	return 0;
 }
@@ -42,7 +47,20 @@ int aleatorio(int a, int b){
 	c = a + rand() % b;
 	return c;
 }
+char letrasAleatorias(int num){
 
+   //int num = aleatorio(1,5);
+
+   if(num== 1)
+	   return 'M';
+	 else if(num == 2)
+	   return 'A';
+	 else if(num == 3)
+	   return 'R';
+	 else
+	   return 'V';
+
+}
 void limpiar() {
 	system("clear");
 }
@@ -62,12 +80,14 @@ void llenarMapa(char mapa[FIL][COL]) {
 
 void mostrarMapa(char mapa[FIL][COL]) {
 	int i, j;
+
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
 			printf("%c", mapa[i][j]);
 		}
 		printf("\n");
 	}
+
 }
 
 void asignarPosiciones(char mapa[FIL][COL], int *posicionFilas, int *posicionColumnas) {
@@ -234,5 +254,17 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 			}
 		}
 		if (contadorPosiciones == posicionMover) break;
+	}
+}
+void acomodarMapa(char mapa[FIL][COL]){
+
+	int i, j;
+	for (i = 0; i < FIL; i++) {
+		for (j = 0; j < COL; j++) {
+			 if(i>=1 && i<=5 && j>=1 && j<=12 && mapa[i][j]!='O')
+			   mapa[i][j]='-';
+				else if(mapa[i][j]=='O');
+				 // mapa[i][j] = letrasAleatorias();
+		}
 	}
 }
