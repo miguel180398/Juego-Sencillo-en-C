@@ -10,20 +10,28 @@
 int aleatorio(int, int);
 char letrasAleatorias(int);
 void limpiar();
+
 void llenarMapa(char [FIL][COL]);
 void mostrarMapa(char [FIL][COL]);
 void asignarPosiciones(char [FIL][COL], int *, int *);
 void moverPosicion(char [FIL][COL], int *, int *);
 void acomodarMapa(char [FIL][COL]);
+void imprimirColor(char *, char *, char *); // Añadida por Khristopher el 27/07/19, funcion de colores
 
 int main() {
 
 	limpiar();
-	int i;
-	/*char mapa[FIL][COL];
 
+	int i;
+	char mapa[FIL][COL];
+
+	srand(time(NULL)); // 27/07/19 - Generar semilla para todo el programa
+
+	for (size_t i = 0; i < 10; i++) printf("%c ", letrasAleatorias(aleatorio(1,4)));
+
+/*
 	llenarMapa(mapa);
-  //acomodarMapa(mapa);
+  acomodarMapa(mapa);
 	// Posicion incial, aleatorio para las filas
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
@@ -33,24 +41,23 @@ int main() {
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas);
 	}
   acomodarMapa(mapa);
-	mostrarMapa(mapa);*/
-	for (i = 0; i < 11; i++) {
-		printf("%d",aleatorio(1,4));
-	}
-
+	mostrarMapa(mapa);
+*/
 	return 0;
 }
 
 int aleatorio(int a, int b){
 	int c;
-	srand(time(NULL));
+	// srand(time(NULL)); // 27/07/19 - Si se deja adentro de la funcion genera siempre el mismo numero, desconosco la razon
 	c = a + rand() % b;
 	return c;
 }
+
 char letrasAleatorias(int num){
 
-   //int num = aleatorio(1,5);
+   //int num = aleatorio(1,5); // 27/07/19 - Ya resibe un aleatorio, a menos de que le quites el parametro y lo generes adentro
 
+	 // 27/07/19 En estos casos es mejor un switch
    if(num== 1)
 	   return 'M';
 	 else if(num == 2)
@@ -61,6 +68,7 @@ char letrasAleatorias(int num){
 	   return 'V';
 
 }
+
 void limpiar() {
 	system("clear");
 }
@@ -83,7 +91,9 @@ void mostrarMapa(char mapa[FIL][COL]) {
 
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
-			printf("%c", mapa[i][j]);
+			// 27/07/19 - Probando colores :D
+			if (mapa[i][j] == '/') imprimirColor("azul","blanco","▒"); // Barreas pro xD
+			else printf("%c", mapa[i][j]);
 		}
 		printf("\n");
 	}
@@ -256,6 +266,7 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 		if (contadorPosiciones == posicionMover) break;
 	}
 }
+
 void acomodarMapa(char mapa[FIL][COL]){
 
 	int i, j;
@@ -267,4 +278,58 @@ void acomodarMapa(char mapa[FIL][COL]){
 				 // mapa[i][j] = letrasAleatorias();
 		}
 	}
+}
+
+void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
+  /*
+    -Esta funcion recibe tres parametros, el primero es el color del texto, el segundo el el color del fondo y el tercero el el texto a colorear.
+    -Si los parametros se encuentran vacios se coloca el color por defecto del terminal
+    -Los colores disponibles son: gris, rojo verde, amarillo, azul, magenta, cian, negro, blanco.
+    -Si al nombre del color le agregas una c al final ("azul" -> "azulc") vuelve el color mas claro
+    -Los parametros (colores) de deben escribir en minusculas y solo el nombre del color, sin espacion u otros caracteres
+  */
+
+  // Codiciones colores del texto
+  if (colorTexto == "gris") printf("\e[30m");
+  if (colorTexto == "rojo") printf("\e[31m");
+  if (colorTexto == "verde") printf("\e[32m");
+  if (colorTexto == "amarillo") printf("\e[33m");
+  if (colorTexto == "azul") printf("\e[34m");
+  if (colorTexto == "magenta") printf("\e[35m");
+  if (colorTexto == "cian") printf("\e[36m");
+  if (colorTexto == "blanco") printf("\e[37m");
+  // Colores claros
+  if (colorTexto == "negro") printf("\e[0;30m");
+  if (colorTexto == "rojoc") printf("\e[0;31m");
+  if (colorTexto == "verdec") printf("\e[0;32m");
+  if (colorTexto == "amarilloc") printf("\e[0;33m");
+  if (colorTexto == "azulc") printf("\e[0;34m");
+  if (colorTexto == "magentac") printf("\e[0;35m");
+  if (colorTexto == "cianc") printf("\e[0;36m");
+  if (colorTexto == "blancoc") printf("\e[0;37m");
+
+  // Condiciones colores del fondo
+  if (colorFondo == "gris") printf("\e[100m");
+  if (colorFondo == "rojo") printf("\e[101m");
+  if (colorFondo == "verde") printf("\e[102m");
+  if (colorFondo == "amarillo") printf("\e[103m");
+  if (colorFondo == "azul") printf("\e[104m");
+  if (colorFondo == "magenta") printf("\e[105m");
+  if (colorFondo == "cian") printf("\e[106m");
+  if (colorFondo == "blanco") printf("\e[107m");
+  // Colores claros
+  if (colorFondo == "negro") printf("\e[40m");
+  if (colorFondo == "rojoc") printf("\e[41m");
+  if (colorFondo == "verdec") printf("\e[42m");
+  if (colorFondo == "amarilloc") printf("\e[43m");
+  if (colorFondo == "azulc") printf("\e[44m");
+  if (colorFondo == "magentac") printf("\e[45m");
+  if (colorFondo == "cianc") printf("\e[46m");
+  if (colorFondo == "blancoc") printf("\e[47m");
+
+  // Colorear texto y fondo
+  printf("%s", texto);
+
+  // Regresar al color por defecto
+  printf("\033[0m");
 }
