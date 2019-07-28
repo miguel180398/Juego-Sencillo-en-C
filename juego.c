@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 // 28/07 - Prueba desde Atom, ingnorar
-// Prueba 2 Atom xD
+// Prueba 2 Atom xD, prueba 3
 #define FIL 7
 #define COL 14
 
