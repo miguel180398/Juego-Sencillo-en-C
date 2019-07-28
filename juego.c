@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <ctype.h>
-
+// 28/07 - Prueba desde Atom, ingnorar
 #define FIL 7
 #define COL 14
 
@@ -17,6 +17,7 @@ void asignarPosiciones(char [FIL][COL], int *, int *);
 void moverPosicion(char [FIL][COL], int *, int *);
 void acomodarMapa(char [FIL][COL]);
 void imprimirColor(char *, char *, char *); // Añadida por Khristopher el 27/07/19, funcion de colores
+void reproducirAudio(char *); // Añadida el 28/07
 
 int main() {
 
@@ -332,4 +333,21 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
 
   // Regresar al color por defecto
   printf("\033[0m");
+}
+
+void reproducirAudio(char *nombre)
+{
+	/*
+	-Esta funcion recibe el nombre del sonido sin la extension .mp3
+	-Bibliotecas usadas, stdlib.h y string.h
+	*/
+	char *programa = {"mpg123 -q "};
+	char *extension = {".mp3"};
+	char *comando = malloc(strlen(nombre) + strlen(programa) + strlen(extension));
+
+	strcpy(comando, programa);
+	strcat(comando, nombre);
+	strcat(comando, extension);
+
+	system(comando);
 }
