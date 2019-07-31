@@ -23,7 +23,7 @@ void acomodarMatriz(char [FIL][COL]);
 void imprimirColor(char *, char *, char *); // Añadida por Khristopher el 27/07/19, funcion de colores
 void reproducirAudio(char *); // Añadida el 29/07/19
 int leerTecla(void);//Añadida por Miguel el 29/07/19
-
+void mapaColores(char,int);
 
 int main() {
 
@@ -34,7 +34,7 @@ int main() {
 
 	srand(time(NULL)); // 27/07/19 - Generar semilla para todo el programa
 
-	llenarMatriz(mapa);
+	/*llenarMatriz(mapa);
 	// Posicion incial, aleatorio para las filas
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
@@ -44,7 +44,12 @@ int main() {
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas);
 	}
   acomodarMatriz(mapa);
-	mostrarMatriz(mapa);
+	mostrarMatriz(mapa);*/
+	mapaColores('M',1);
+	printf("\n");
+	mapaColores('M',2);
+	printf("\n");
+	mapaColores('M',3);
 
 	return 0;
 }
@@ -309,6 +314,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorTexto == "magenta") printf("\e[35m");
   if (colorTexto == "cian") printf("\e[36m");
   if (colorTexto == "blanco") printf("\e[37m");
+
   // Colores claros
   if (colorTexto == "negro") printf("\e[0;30m");
   if (colorTexto == "rojoc") printf("\e[0;31m");
@@ -319,6 +325,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorTexto == "cianc") printf("\e[0;36m");
   if (colorTexto == "blancoc") printf("\e[0;37m");
 
+
   // Condiciones colores del fondo
   if (colorFondo == "gris") printf("\e[100m");
   if (colorFondo == "rojo") printf("\e[101m");
@@ -328,6 +335,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorFondo == "magenta") printf("\e[105m");
   if (colorFondo == "cian") printf("\e[106m");
   if (colorFondo == "blanco") printf("\e[107m");
+
   // Colores claros
   if (colorFondo == "negro") printf("\e[40m");
   if (colorFondo == "rojoc") printf("\e[41m");
@@ -371,4 +379,37 @@ int leerTecla(void){
   ch = getchar();
   tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
   return ch;
+}
+
+void mapaColores(char letra,int fila){
+
+  if(letra == 'R' &&( fila == 1|| fila == 3))
+    imprimirColor("rojo","rojo","   ");
+	else if (letra == 'R' && fila == 2){
+	  imprimirColor("rojo","rojo"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("rojo","rojo"," ");
+	}
+	else if(letra == 'V' &&( fila == 1|| fila == 3))
+    imprimirColor("verde","verde","   ");
+	else if (letra == 'V' && fila == 2){
+	  imprimirColor("verde","verde"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("verde","verde"," ");
+	}
+	else if(letra == 'M' &&( fila == 1|| fila == 3))
+    imprimirColor("magenta","magenta","   ");
+	else if (letra == 'M' && fila == 2){
+	  imprimirColor("magenta","magenta"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("magenta","magenta"," ");
+	}
+	else if(letra == 'A' &&( fila == 1|| fila == 3))
+    imprimirColor("azul","azul","   ");
+	else if (letra == 'A' && fila == 2){
+	  imprimirColor("azul","azul"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("azul","azul"," ");
+	}
+
 }
