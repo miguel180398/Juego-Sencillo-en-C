@@ -441,7 +441,7 @@ void mapaColores(char letra,int fila){
 
 void pantallaMenu() {
 	int i, j;
-	int alto = 20, ancho = 50; // Resolucion de la pantalla del terminal
+	int alto = 24, ancho = 80; // Resolucion de la pantalla del terminal
 	for (i = 0; i < alto; i++) {
 		for (j = 0; j < ancho; j++) {
 			// Perdon por el codigo spaguetti, es que es mas comodo para leer
