@@ -3,15 +3,11 @@
 #include <time.h>
 #include <stdbool.h>
 #include <string.h>
-<<<<<<< HEAD
-
-=======
 #include <termios.h>
 #include <unistd.h>
 
 // 28/07 - Prueba desde Atom, ingnorar
 // Prueba 2 Atom xD, prueba 3
->>>>>>> fd9c90ddde8e25e005dc27a06f0c8d2ad85ccb1b
 #define FIL 7
 #define COL 14
 
@@ -38,15 +34,7 @@ int main() {
 
 	srand(time(NULL)); // 27/07/19 - Generar semilla para todo el programa
 
-<<<<<<< HEAD
-	// for (size_t i = 0; i < 10; i++) printf("%c ", letrasAleatorias(aleatorio(1,4)));
-
-
-	llenarMapa(mapa);
-  acomodarMapa(mapa);
-=======
 	/*llenarMatriz(mapa);
->>>>>>> fd9c90ddde8e25e005dc27a06f0c8d2ad85ccb1b
 	// Posicion incial, aleatorio para las filas
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
@@ -55,10 +43,6 @@ int main() {
 		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas);
 	}
-<<<<<<< HEAD
-  acomodarMapa(mapa);
-	mostrarMapa(mapa);
-=======
   acomodarMatriz(mapa);
 	mostrarMatriz(mapa);*/
 	mapaColores('M',1);
@@ -66,7 +50,6 @@ int main() {
 	mapaColores('M',2);
 	printf("\n");
 	mapaColores('M',3);
->>>>>>> fd9c90ddde8e25e005dc27a06f0c8d2ad85ccb1b
 
 	return 0;
 }
