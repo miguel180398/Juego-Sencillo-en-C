@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
-#include <ctype.h>
+#include <string.h>
 
 #define FIL 7
 #define COL 14
@@ -28,9 +28,9 @@ int main() {
 
 	srand(time(NULL)); // 27/07/19 - Generar semilla para todo el programa
 
-	for (size_t i = 0; i < 10; i++) printf("%c ", letrasAleatorias(aleatorio(1,4)));
+	// for (size_t i = 0; i < 10; i++) printf("%c ", letrasAleatorias(aleatorio(1,4)));
 
-/*
+
 	llenarMapa(mapa);
   acomodarMapa(mapa);
 	// Posicion incial, aleatorio para las filas
@@ -43,7 +43,7 @@ int main() {
 	}
   acomodarMapa(mapa);
 	mostrarMapa(mapa);
-*/
+
 	return 0;
 }
 
@@ -71,7 +71,7 @@ char letrasAleatorias(int num){
 }
 
 void limpiar() {
-	system("clear");
+	system("cls");
 }
 
 void llenarMapa(char mapa[FIL][COL]) {
