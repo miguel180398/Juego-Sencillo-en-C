@@ -1,3 +1,12 @@
+/*
+Notas:
+1) En cada funcion deberiamos especificar que librerias usan, porque ya veo que las librerias van para largoooo
+2) Los comentarios como "añadido el dia tal por x persona" los borra la otra persona que los vea, para no tener tantos comentarios sueltos
+3) Deberiamos usar esta parte para las notas, con este formato
+4) Siempre dejar espacios entre funciones, me di cuenta que las sueles colocar juntas, bueno eso es solo algo estetico
+5) Funcion "saltar", en vez de usar printf("\n");
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -6,24 +15,29 @@
 #include <termios.h>
 #include <unistd.h>
 
-// 28/07 - Prueba desde Atom, ingnorar
-// Prueba 2 Atom xD, prueba 3
 #define FIL 7
 #define COL 14
 
 int aleatorio(int, int);
 char letrasAleatorias();
+
 void limpiar();
+void saltar(int);
 
 void llenarMatriz(char [FIL][COL]);
 void mostrarMatriz(char [FIL][COL]);
 void asignarPosiciones(char [FIL][COL], int *, int *);
 void moverPosicion(char [FIL][COL], int *, int *);
 void acomodarMatriz(char [FIL][COL]);
-void imprimirColor(char *, char *, char *); // Añadida por Khristopher el 27/07/19, funcion de colores
-void reproducirAudio(char *); // Añadida el 29/07/19
-int leerTecla(void);//Añadida por Miguel el 29/07/19
+
+void imprimirColor(char *, char *, char *);
+void reproducirAudio(char *);
+
+int leerTecla(void);
 void mapaColores(char,int);
+
+// Pantallas (interfaz)
+void pantallaMenu();
 
 int main() {
 
@@ -32,9 +46,10 @@ int main() {
 	int i;
 	char mapa[FIL][COL];
 
-	srand(time(NULL)); // 27/07/19 - Generar semilla para todo el programa
+	srand(time(NULL)); // Generar semilla para todo el programa
 
-	/*llenarMatriz(mapa);
+	llenarMatriz(mapa);
+
 	// Posicion incial, aleatorio para las filas
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
@@ -44,27 +59,31 @@ int main() {
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas);
 	}
   acomodarMatriz(mapa);
-	mostrarMatriz(mapa);*/
-	mapaColores('M',1);
-	printf("\n");
-	mapaColores('M',2);
-	printf("\n");
-	mapaColores('M',3);
 
+	pantallaMenu();
+/*
+	mostrarMatriz(mapa);
+
+	saltar(1);
+	mapaColores('M',1);
+	saltar(1);
+	mapaColores('M',2);
+	saltar(1);
+	mapaColores('M',3);
+	saltar(1);
+*/
 	return 0;
 }
 
 int aleatorio(int a, int b){
 	int c;
-	// srand(time(NULL)); // 27/07/19 - Si se deja adentro de la funcion genera siempre el mismo numero, desconosco la razon
 	c = a + rand() % b;
 	return c;
 }
 
-char letrasAleatorias(){
-
-   switch (aleatorio(1,4)) {
-   	case 1:
+char letrasAleatorias() {
+	switch (aleatorio(1,4)){
+		case 1:
 			return 'M';
 			break;
 		case 2:
@@ -75,12 +94,18 @@ char letrasAleatorias(){
 			break;
 		case 4:
 			return 'V';
-   }
-
+	}
 }
 
 void limpiar() {
-	system("cls");
+	system("clear");
+}
+
+void saltar(int n) {
+	int i;
+	for (i = 0; i < n; i++) {
+		printf("\n");
+	}
 }
 
 void llenarMatriz(char mapa[FIL][COL]) {
@@ -101,16 +126,17 @@ void mostrarMatriz(char mapa[FIL][COL]) {
 
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
-			// 27/07/19 - Probando colores :D
-			if (mapa[i][j] == '/') imprimirColor("azul","blanco","▒"); // Barreas pro xD
+			if (mapa[i][j] == '/') imprimirColor("azul","blanco","▒");
+			else if (mapa[i][j] == '-') imprimirColor("","azul"," ");
 			else printf("%c", mapa[i][j]);
 		}
-		printf("\n");
+		saltar(1);
 	}
 
 }
 
 void asignarPosiciones(char mapa[FIL][COL], int *posicionFilas, int *posicionColumnas) {
+
 	// Nombre variables
 	char posicion = 'X';
 	char barrera = '/';
@@ -279,28 +305,28 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 
 void acomodarMatriz(char mapa[FIL][COL]){
 
-  // acomoda el mapa colocandole guiones - por donde estaban slas /
+  // Acomoda el mapa colocandole guiones - por donde estaban slas /
 	int i, j;
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
-			 if(i>=1 && i<FIL-1 && j>=1 && j<COL-1 && mapa[i][j]!='O')
-			   mapa[i][j]='-';
+			 if(i >= 1 && i < FIL-1 && j >= 1 && j < COL-1 && mapa[i][j] != 'O')
+			   mapa[i][j] = '-';
 		}
 	}
 	// Sustituye las 'O' por letras aleatorias
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
-			 if(mapa[i][j]=='O')
-			   mapa[i][j]=letrasAleatorias();
+			 if(mapa[i][j] == 'O')
+			   mapa[i][j] = letrasAleatorias();
 		}
 	}
 }
 
 void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   /*
-    -Esta funcion recibe tres parametros, el primero es el color del texto, el segundo el el color del fondo y el tercero el el texto a colorear.
-  -Si los parametros se encuentran vacios se coloca el color por defecto del terminal
-    -Los colores disponibles son: gris, rojo verde, amarillo, azul, magenta, cian, negro, blanco.
+		-Esta funcion recibe tres parametros, el primero es el color del texto, el segundo el el color del fondo y el tercero el el texto a colorear.
+		-Si los parametros se encuentran vacios se coloca el color por defecto del terminal
+    -Los colores disponibles son: gris, rojo verde, amarillo, azul, rosado, cian, negro, blanco.
     -Si al nombre del color le agregas una c al final ("azul" -> "azulc") vuelve el color mas claro
     -Los parametros (colores) de deben escribir en minusculas y solo el nombre del color, sin espacion u otros caracteres
   */
@@ -311,7 +337,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorTexto == "verde") printf("\e[32m");
   if (colorTexto == "amarillo") printf("\e[33m");
   if (colorTexto == "azul") printf("\e[34m");
-  if (colorTexto == "magenta") printf("\e[35m");
+  if (colorTexto == "rosado") printf("\e[35m");
   if (colorTexto == "cian") printf("\e[36m");
   if (colorTexto == "blanco") printf("\e[37m");
 
@@ -321,7 +347,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorTexto == "verdec") printf("\e[0;32m");
   if (colorTexto == "amarilloc") printf("\e[0;33m");
   if (colorTexto == "azulc") printf("\e[0;34m");
-  if (colorTexto == "magentac") printf("\e[0;35m");
+  if (colorTexto == "rosadoc") printf("\e[0;35m");
   if (colorTexto == "cianc") printf("\e[0;36m");
   if (colorTexto == "blancoc") printf("\e[0;37m");
 
@@ -332,7 +358,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorFondo == "verde") printf("\e[102m");
   if (colorFondo == "amarillo") printf("\e[103m");
   if (colorFondo == "azul") printf("\e[104m");
-  if (colorFondo == "magenta") printf("\e[105m");
+  if (colorFondo == "rosado") printf("\e[105m");
   if (colorFondo == "cian") printf("\e[106m");
   if (colorFondo == "blanco") printf("\e[107m");
 
@@ -342,7 +368,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorFondo == "verdec") printf("\e[42m");
   if (colorFondo == "amarilloc") printf("\e[43m");
   if (colorFondo == "azulc") printf("\e[44m");
-  if (colorFondo == "magentac") printf("\e[45m");
+  if (colorFondo == "rosadoc") printf("\e[45m");
   if (colorFondo == "cianc") printf("\e[46m");
   if (colorFondo == "blancoc") printf("\e[47m");
 
@@ -353,8 +379,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   printf("\033[0m");
 }
 
-void reproducirAudio(char *nombre)
-{
+void reproducirAudio(char *nombre) {
 	/*
 	-Esta funcion recibe el nombre del sonido sin la extension .mp3
 	-Bibliotecas usadas, stdlib.h y string.h
@@ -369,7 +394,8 @@ void reproducirAudio(char *nombre)
 
 	system(comando);
 }
-int leerTecla(void){
+
+int leerTecla(void) {
   struct termios oldattr, newattr;
   int ch;
   tcgetattr( STDIN_FILENO, &oldattr );
@@ -398,11 +424,11 @@ void mapaColores(char letra,int fila){
 		imprimirColor("verde","verde"," ");
 	}
 	else if(letra == 'M' &&( fila == 1|| fila == 3))
-    imprimirColor("magenta","magenta","   ");
+    imprimirColor("rosadoc","rosadoc","   ");
 	else if (letra == 'M' && fila == 2){
-	  imprimirColor("magenta","magenta"," ");
+	  imprimirColor("rosadoc","rosadoc"," ");
 	  imprimirColor("negro","negro"," ");
-		imprimirColor("magenta","magenta"," ");
+		imprimirColor("rosadoc","rosadoc"," ");
 	}
 	else if(letra == 'A' &&( fila == 1|| fila == 3))
     imprimirColor("azul","azul","   ");
@@ -411,5 +437,71 @@ void mapaColores(char letra,int fila){
 	  imprimirColor("negro","negro"," ");
 		imprimirColor("azul","azul"," ");
 	}
+}
 
+void pantallaMenu() {
+	int i, j;
+	int alto = 20, ancho = 50; // Resolucion de la pantalla del terminal
+	for (i = 0; i < alto; i++) {
+		for (j = 0; j < ancho; j++) {
+			// Perdon por el codigo spaguetti, es que es mas comodo para leer
+			// Letra 'M'
+			if (i == 2 && j > 2 && j < 4) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 3 && j < 5) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 5 && j < 7) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 6 && j < 8) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 2 && j < 4) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 6 && j < 8) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 4 && j < 6) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 2 && j < 4) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 6 && j < 8) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 2 && j < 4) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 6 && j < 8) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 2 && j < 4) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 6 && j < 8) {imprimirColor("","azul"," ");continue;}
+			// Letra 'E'
+			if (i == 2 && j > 8 && j < 10) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 9 && j < 11) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 10 && j < 12) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 11 && j < 13) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 8 && j < 10) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 9 && j < 11) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 10 && j < 12) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 8 && j < 10) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 8 && j < 10) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 8 && j < 10) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 9 && j < 11) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 10 && j < 12) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 11 && j < 13) {imprimirColor("","azul"," ");continue;}
+			// Letra 'N'
+			if (i == 2 && j > 13 && j < 15) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 14 && j < 16) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 18 && j < 20) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 13 && j < 15) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 15 && j < 17) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 18 && j < 20) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 13 && j < 15) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 16 && j < 18) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 18 && j < 20) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 13 && j < 15) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 17 && j < 19) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 18 && j < 20) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 13 && j < 15) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 18 && j < 20) {imprimirColor("","azul"," ");continue;}
+			// Letra 'U'
+			if (i == 2 && j > 20 && j < 22) {imprimirColor("","azul"," ");continue;}
+			if (i == 2 && j > 24 && j < 26) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 20 && j < 22) {imprimirColor("","azul"," ");continue;}
+			if (i == 3 && j > 24 && j < 26) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 20 && j < 22) {imprimirColor("","azul"," ");continue;}
+			if (i == 4 && j > 24 && j < 26) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 20 && j < 22) {imprimirColor("","azul"," ");continue;}
+			if (i == 5 && j > 24 && j < 26) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 21 && j < 23) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 22 && j < 24) {imprimirColor("","azul"," ");continue;}
+			if (i == 6 && j > 23 && j < 25) {imprimirColor("","azul"," ");continue;}
+			imprimirColor("","blanco"," ");
+		}
+		saltar(1);
+	}
 }
