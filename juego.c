@@ -3,21 +3,31 @@
 #include <time.h>
 #include <stdbool.h>
 #include <string.h>
+<<<<<<< HEAD
 
+=======
+#include <termios.h>
+#include <unistd.h>
+
+// 28/07 - Prueba desde Atom, ingnorar
+// Prueba 2 Atom xD, prueba 3
+>>>>>>> fd9c90ddde8e25e005dc27a06f0c8d2ad85ccb1b
 #define FIL 7
 #define COL 14
 
 int aleatorio(int, int);
-char letrasAleatorias(int);
+char letrasAleatorias();
 void limpiar();
 
-void llenarMapa(char [FIL][COL]);
-void mostrarMapa(char [FIL][COL]);
+void llenarMatriz(char [FIL][COL]);
+void mostrarMatriz(char [FIL][COL]);
 void asignarPosiciones(char [FIL][COL], int *, int *);
 void moverPosicion(char [FIL][COL], int *, int *);
-void acomodarMapa(char [FIL][COL]);
+void acomodarMatriz(char [FIL][COL]);
 void imprimirColor(char *, char *, char *); // Añadida por Khristopher el 27/07/19, funcion de colores
-void reproducirAudio(char *); // Añadida el 28/07
+void reproducirAudio(char *); // Añadida el 29/07/19
+int leerTecla(void);//Añadida por Miguel el 29/07/19
+void mapaColores(char,int);
 
 int main() {
 
@@ -28,11 +38,15 @@ int main() {
 
 	srand(time(NULL)); // 27/07/19 - Generar semilla para todo el programa
 
+<<<<<<< HEAD
 	// for (size_t i = 0; i < 10; i++) printf("%c ", letrasAleatorias(aleatorio(1,4)));
 
 
 	llenarMapa(mapa);
   acomodarMapa(mapa);
+=======
+	/*llenarMatriz(mapa);
+>>>>>>> fd9c90ddde8e25e005dc27a06f0c8d2ad85ccb1b
 	// Posicion incial, aleatorio para las filas
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
@@ -41,8 +55,18 @@ int main() {
 		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas);
 	}
+<<<<<<< HEAD
   acomodarMapa(mapa);
 	mostrarMapa(mapa);
+=======
+  acomodarMatriz(mapa);
+	mostrarMatriz(mapa);*/
+	mapaColores('M',1);
+	printf("\n");
+	mapaColores('M',2);
+	printf("\n");
+	mapaColores('M',3);
+>>>>>>> fd9c90ddde8e25e005dc27a06f0c8d2ad85ccb1b
 
 	return 0;
 }
@@ -54,19 +78,21 @@ int aleatorio(int a, int b){
 	return c;
 }
 
-char letrasAleatorias(int num){
+char letrasAleatorias(){
 
-   //int num = aleatorio(1,5); // 27/07/19 - Ya resibe un aleatorio, a menos de que le quites el parametro y lo generes adentro
-
-	 // 27/07/19 En estos casos es mejor un switch
-   if(num== 1)
-	   return 'M';
-	 else if(num == 2)
-	   return 'A';
-	 else if(num == 3)
-	   return 'R';
-	 else
-	   return 'V';
+   switch (aleatorio(1,4)) {
+   	case 1:
+			return 'M';
+			break;
+		case 2:
+			return 'A';
+			break;
+		case 3:
+			return 'R';
+			break;
+		case 4:
+			return 'V';
+   }
 
 }
 
@@ -74,7 +100,7 @@ void limpiar() {
 	system("cls");
 }
 
-void llenarMapa(char mapa[FIL][COL]) {
+void llenarMatriz(char mapa[FIL][COL]) {
 	int i, j;
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
@@ -87,7 +113,7 @@ void llenarMapa(char mapa[FIL][COL]) {
 	}
 }
 
-void mostrarMapa(char mapa[FIL][COL]) {
+void mostrarMatriz(char mapa[FIL][COL]) {
 	int i, j;
 
 	for (i = 0; i < FIL; i++) {
@@ -268,15 +294,21 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 	}
 }
 
-void acomodarMapa(char mapa[FIL][COL]){
+void acomodarMatriz(char mapa[FIL][COL]){
 
+  // acomoda el mapa colocandole guiones - por donde estaban slas /
 	int i, j;
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
-			 if(i>=1 && i<=5 && j>=1 && j<=12 && mapa[i][j]!='O')
+			 if(i>=1 && i<FIL-1 && j>=1 && j<COL-1 && mapa[i][j]!='O')
 			   mapa[i][j]='-';
-				else if(mapa[i][j]=='O');
-				 // mapa[i][j] = letrasAleatorias();
+		}
+	}
+	// Sustituye las 'O' por letras aleatorias
+	for (i = 0; i < FIL; i++) {
+		for (j = 0; j < COL; j++) {
+			 if(mapa[i][j]=='O')
+			   mapa[i][j]=letrasAleatorias();
 		}
 	}
 }
@@ -284,7 +316,7 @@ void acomodarMapa(char mapa[FIL][COL]){
 void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   /*
     -Esta funcion recibe tres parametros, el primero es el color del texto, el segundo el el color del fondo y el tercero el el texto a colorear.
-    -Si los parametros se encuentran vacios se coloca el color por defecto del terminal
+  -Si los parametros se encuentran vacios se coloca el color por defecto del terminal
     -Los colores disponibles son: gris, rojo verde, amarillo, azul, magenta, cian, negro, blanco.
     -Si al nombre del color le agregas una c al final ("azul" -> "azulc") vuelve el color mas claro
     -Los parametros (colores) de deben escribir en minusculas y solo el nombre del color, sin espacion u otros caracteres
@@ -299,6 +331,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorTexto == "magenta") printf("\e[35m");
   if (colorTexto == "cian") printf("\e[36m");
   if (colorTexto == "blanco") printf("\e[37m");
+
   // Colores claros
   if (colorTexto == "negro") printf("\e[0;30m");
   if (colorTexto == "rojoc") printf("\e[0;31m");
@@ -309,6 +342,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorTexto == "cianc") printf("\e[0;36m");
   if (colorTexto == "blancoc") printf("\e[0;37m");
 
+
   // Condiciones colores del fondo
   if (colorFondo == "gris") printf("\e[100m");
   if (colorFondo == "rojo") printf("\e[101m");
@@ -318,6 +352,7 @@ void imprimirColor(char *colorTexto, char *colorFondo, char *texto) {
   if (colorFondo == "magenta") printf("\e[105m");
   if (colorFondo == "cian") printf("\e[106m");
   if (colorFondo == "blanco") printf("\e[107m");
+
   // Colores claros
   if (colorFondo == "negro") printf("\e[40m");
   if (colorFondo == "rojoc") printf("\e[41m");
@@ -350,4 +385,48 @@ void reproducirAudio(char *nombre)
 	strcat(comando, extension);
 
 	system(comando);
+}
+int leerTecla(void){
+  struct termios oldattr, newattr;
+  int ch;
+  tcgetattr( STDIN_FILENO, &oldattr );
+  newattr = oldattr;
+  newattr.c_lflag &= ~( ICANON | ECHO );
+  tcsetattr( STDIN_FILENO, TCSANOW, &newattr );
+  ch = getchar();
+  tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
+  return ch;
+}
+
+void mapaColores(char letra,int fila){
+
+  if(letra == 'R' &&( fila == 1|| fila == 3))
+    imprimirColor("rojo","rojo","   ");
+	else if (letra == 'R' && fila == 2){
+	  imprimirColor("rojo","rojo"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("rojo","rojo"," ");
+	}
+	else if(letra == 'V' &&( fila == 1|| fila == 3))
+    imprimirColor("verde","verde","   ");
+	else if (letra == 'V' && fila == 2){
+	  imprimirColor("verde","verde"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("verde","verde"," ");
+	}
+	else if(letra == 'M' &&( fila == 1|| fila == 3))
+    imprimirColor("magenta","magenta","   ");
+	else if (letra == 'M' && fila == 2){
+	  imprimirColor("magenta","magenta"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("magenta","magenta"," ");
+	}
+	else if(letra == 'A' &&( fila == 1|| fila == 3))
+    imprimirColor("azul","azul","   ");
+	else if (letra == 'A' && fila == 2){
+	  imprimirColor("azul","azul"," ");
+	  imprimirColor("negro","negro"," ");
+		imprimirColor("azul","azul"," ");
+	}
+
 }
