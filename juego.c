@@ -27,24 +27,29 @@ void saltar(int);
 void llenarMatriz(char [FIL][COL]);
 void mostrarMatriz(char [FIL][COL]);
 void asignarPosiciones(char [FIL][COL], int *, int *);
-void moverPosicion(char [FIL][COL], int *, int *);
+void moverPosicion(char [FIL][COL], int *, int *,char *, int * , int *);
 void acomodarMatriz(char [FIL][COL]);
 
 void imprimirColor(char *, char *, char *);
 void reproducirAudio(char *);
 
 int leerTecla(void);
-void mapaColores(char,int);
 
 // Pantallas (interfaz)
 void pantallaMenu();
 
+void mostrarMapa(char [FIL][COL]); //nueva
+
+void devolverLetras(char [FIL][COL],int *, int *,char *); // nueva
+
+void nivel1(); //NUEVO
+
 int main() {
 
-	limpiar();
+	/*limpiar();
 
-	int i;
-	char mapa[FIL][COL];
+	int i,j,coordenadaX[11],coordenadaY[11]; //nueva
+	char mapa[FIL][COL], posiciones[11],letra[11]; // nueva
 
 	srand(time(NULL)); // Generar semilla para todo el programa
 
@@ -54,24 +59,32 @@ int main() {
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
 
+
 	for (i = 0; i < 11; i++) {
 		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
-		moverPosicion(mapa, &posicionFilas, &posicionColumnas);
+		moverPosicion(mapa, &posicionFilas, &posicionColumnas,&posiciones[i],&coordenadaX[i],&coordenadaY[i]);
 	}
   acomodarMatriz(mapa);
+  
+  devolverLetras(mapa,coordenadaX, coordenadaY,letra); // se encarga de devolver el color en cada posicion de la matriz
+  for (i = 0; i < 10; i++){
 
-	pantallaMenu();
-/*
-	mostrarMatriz(mapa);
+		printf("%c ",posiciones[i]); // nueva 
+	}
+  printf("\n");
+  for (i = 0; i < 10; i++){
+		printf("%c ",letra[i]); // nueva 
+	}
+  printf("\n");
+	//pantallaMenu();
+  mostrarMatriz(mapa);
+	saltar(1);
+	mostrarMapa(mapa);*/
 
-	saltar(1);
-	mapaColores('M',1);
-	saltar(1);
-	mapaColores('M',2);
-	saltar(1);
-	mapaColores('M',3);
-	saltar(1);
-*/
+
+  nivel1();//NUEVO
+
+
 	return 0;
 }
 
@@ -84,7 +97,7 @@ int aleatorio(int a, int b){
 char letrasAleatorias() {
 	switch (aleatorio(1,4)){
 		case 1:
-			return 'M';
+			return 'B';
 			break;
 		case 2:
 			return 'A';
@@ -127,7 +140,7 @@ void mostrarMatriz(char mapa[FIL][COL]) {
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
 			if (mapa[i][j] == '/') imprimirColor("azul","blanco","▒");
-			else if (mapa[i][j] == '-') imprimirColor("","azul"," ");
+			//else if (mapa[i][j] == '-') imprimirColor("","azul"," ");
 			else printf("%c", mapa[i][j]);
 		}
 		saltar(1);
@@ -147,29 +160,36 @@ void asignarPosiciones(char mapa[FIL][COL], int *posicionFilas, int *posicionCol
 	// X arriba
 	if (mapa[*posicionFilas][*posicionColumnas-1] != barrera && mapa[*posicionFilas][*posicionColumnas-1] != camino) mapa[*posicionFilas][*posicionColumnas-1] = posicion;
 
+
 	// X abajo
 	if (mapa[*posicionFilas+1][*posicionColumnas] != barrera && mapa[*posicionFilas+1][*posicionColumnas] != camino) mapa[*posicionFilas+1][*posicionColumnas] = posicion;
+
 
 	// X izquierda
 	if (mapa[*posicionFilas-1][*posicionColumnas] != barrera && mapa[*posicionFilas-1][*posicionColumnas] != camino) mapa[*posicionFilas-1][*posicionColumnas] = posicion;
 
+
 	// X derecha
 	if (mapa[*posicionFilas][*posicionColumnas+1] != barrera && mapa[*posicionFilas][*posicionColumnas+1] != camino) mapa[*posicionFilas][*posicionColumnas+1] = posicion;
+
 
 	// X diagonal derecha abajo
 	if (mapa[*posicionFilas+1][*posicionColumnas+1] != barrera && mapa[*posicionFilas+1][*posicionColumnas+1] != camino) mapa[*posicionFilas+1][*posicionColumnas+1] = posicion;
 
 	// X diagonal izquierda arriba
 	if (mapa[*posicionFilas-1][*posicionColumnas-1] != barrera && mapa[*posicionFilas-1][*posicionColumnas-1] != camino) mapa[*posicionFilas-1][*posicionColumnas-1] = posicion;
+ 
 
 	// X diagonal dercha arriba
 	if (mapa[*posicionFilas-1][*posicionColumnas+1] != barrera && mapa[*posicionFilas-1][*posicionColumnas+1] != camino) mapa[*posicionFilas-1][*posicionColumnas+1] = posicion;
 
+
 	// X diagonal izquierda abajo
 	if (mapa[*posicionFilas+1][*posicionColumnas-1] != barrera && mapa[*posicionFilas+1][*posicionColumnas-1] != camino) mapa[*posicionFilas+1][*posicionColumnas-1] = posicion;
+
 }
 
-void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumnas) {
+void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumnas, char *devolverPosicion, int *coordenadaX, int  *coordenadaY) {
 
 	// Nombre variables
 	char posicion = 'X';
@@ -199,6 +219,9 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 
 				// Comparacion derecha
 				if (*posicionFilas == i && *posicionColumnas + 1 == j) {
+          *devolverPosicion = 'D';
+          *coordenadaX = i;
+          *coordenadaY = j;
 					for (k = 0; k < FIL; k++) {
 						for (l = 0; l < COL; l++) {
 							if (l == j - 1 && (k == 1 || k == 2 || k == 3 || k == 4 | k == 5))
@@ -218,6 +241,9 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 
 				// Comparacion diagonal arriba
 				if (*posicionFilas - 1 == i && *posicionColumnas + 1 == j) {
+          *devolverPosicion = 'Q';
+          *coordenadaX = i;
+          *coordenadaY = j;
 					for (k = 0; k < FIL; k++) {
 						for (l = 0; l < COL; l++) {
 							if (l == j - 1 && (k == 1 || k == 2 || k == 3 || k == 4 | k == 5))
@@ -244,6 +270,9 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 
 				// Comparacion diagonal abajo
 				if (*posicionFilas + 1 == i && *posicionColumnas + 1 == j) {
+          *devolverPosicion = 'Q';
+          *coordenadaX = i;
+          *coordenadaY = j;
 					for (k = 0; k < FIL; k++) {
 						for (l = 0; l < COL; l++) {
 							if (l == j - 1 && (k == 1 || k == 2 || k == 3 || k == 4 | k == 5))
@@ -270,6 +299,9 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 
 				// Comparacion arriba
 				if (*posicionFilas - 1 == i && *posicionColumnas == j) {
+          *devolverPosicion = 'W';
+          *coordenadaX = i;
+          *coordenadaY = j;
 					mapa[*posicionFilas][*posicionColumnas+1] = barrera;
 					// Para colocar '-' en las 'X'
 					for (k = 0; k < FIL; k++) {
@@ -283,6 +315,9 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 
 				// Comparacion abajo
 				if (*posicionFilas + 1 == i && *posicionColumnas == j) {
+          *devolverPosicion = 'S';
+          *coordenadaX = i;
+          *coordenadaY = j;
 					mapa[*posicionFilas][*posicionColumnas+1] = barrera;
 					// Para colocar '-' en las 'X'
 					for (k = 0; k < FIL; k++) {
@@ -306,7 +341,7 @@ void moverPosicion(char mapa[FIL][COL], int *posicionFilas, int *posicionColumna
 void acomodarMatriz(char mapa[FIL][COL]){
 
   // Acomoda el mapa colocandole guiones - por donde estaban slas /
-	int i, j;
+	int i, j, k=0;
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
 			 if(i >= 1 && i < FIL-1 && j >= 1 && j < COL-1 && mapa[i][j] != 'O')
@@ -316,8 +351,9 @@ void acomodarMatriz(char mapa[FIL][COL]){
 	// Sustituye las 'O' por letras aleatorias
 	for (i = 0; i < FIL; i++) {
 		for (j = 0; j < COL; j++) {
-			 if(mapa[i][j] == 'O')
-			   mapa[i][j] = letrasAleatorias();
+			 if(mapa[i][j] == 'O'){
+			   mapa[i][j]  = letrasAleatorias();
+       }
 		}
 	}
 }
@@ -407,37 +443,7 @@ int leerTecla(void) {
   return ch;
 }
 
-void mapaColores(char letra,int fila){
 
-  if(letra == 'R' &&( fila == 1|| fila == 3))
-    imprimirColor("rojo","rojo","   ");
-	else if (letra == 'R' && fila == 2){
-	  imprimirColor("rojo","rojo"," ");
-	  imprimirColor("negro","negro"," ");
-		imprimirColor("rojo","rojo"," ");
-	}
-	else if(letra == 'V' &&( fila == 1|| fila == 3))
-    imprimirColor("verde","verde","   ");
-	else if (letra == 'V' && fila == 2){
-	  imprimirColor("verde","verde"," ");
-	  imprimirColor("negro","negro"," ");
-		imprimirColor("verde","verde"," ");
-	}
-	else if(letra == 'M' &&( fila == 1|| fila == 3))
-    imprimirColor("rosadoc","rosadoc","   ");
-	else if (letra == 'M' && fila == 2){
-	  imprimirColor("rosadoc","rosadoc"," ");
-	  imprimirColor("negro","negro"," ");
-		imprimirColor("rosadoc","rosadoc"," ");
-	}
-	else if(letra == 'A' &&( fila == 1|| fila == 3))
-    imprimirColor("azul","azul","   ");
-	else if (letra == 'A' && fila == 2){
-	  imprimirColor("azul","azul"," ");
-	  imprimirColor("negro","negro"," ");
-		imprimirColor("azul","azul"," ");
-	}
-}
 
 void pantallaMenu() {
 	int i, j;
@@ -504,4 +510,141 @@ void pantallaMenu() {
 		}
 		saltar(1);
 	}
+}
+void mostrarMapa(char mapa[FIL][COL]){
+
+	int i, j,fila=1,bajar=1;
+
+	for(i = 0; i < FIL; i++) {
+    //espaciar(15);
+		printf("               ");
+		for(j = 0; j < COL; j++) {
+			if (mapa[i][j] == '/') imprimirColor("azul","blanco","▒");
+      else if(mapa[i][j]=='A') imprimirColor("azul","azul","♦");
+		  else if(mapa[i][j]=='B') imprimirColor("blanco","blanco","☺");
+      else if(mapa[i][j]=='R') imprimirColor("rojo","rojo","☼");
+			else if(mapa[i][j]=='V') imprimirColor("verde","verde","♣");
+			else if(mapa[i][j] == '-') imprimirColor("gris","gris","■");
+
+		}
+   printf("   ");
+   if(i == 2){ imprimirColor("negro","amarillo","W: SUBIR     ^ ");
+   //espaciar(3);
+   printf("   ");
+   imprimirColor("negro","azul","A: AZUL   ");}
+   if(i== 3){ imprimirColor("negro","cian","S: BAJAR     v ");
+   //espaciar(3);
+   printf("   ");
+   imprimirColor("negro","rojo","R: ROJO   ");}
+   if(i== 4){imprimirColor("negro","amarillo","D: DERECHA   > ");
+   //espaciar(3);
+   printf("   ");
+   imprimirColor("negro","blanco","B: BLANCO ");}
+   //espaciar(e);
+   if(i== 5){imprimirColor("negro","cian","Q: DIAGONAL  / ");
+  // espaciar(3);
+   printf("   ");
+   imprimirColor("negro","verde","V: VERDE  ");} 
+   saltar(1);
+
+	}
+
+}
+
+void devolverLetras(char mapa[FIL][COL], int *coordenaX, int *coordenadaY,char *letras){
+
+  int i,j,k;
+
+  for(k=0;k<11;k++){
+    for (i = 0; i < FIL; i++) {
+		  for (j = 0; j < COL; j++) {
+			  if(coordenaX[k] == i && coordenadaY[k] == j){
+			    letras[k] = mapa[i][j];
+        }
+		  }
+	  }
+  }
+}
+
+
+
+void nivel1(){
+
+  limpiar();
+
+	int i,j,coordenadaX[11],coordenadaY[11]; //nueva
+	char mapa[FIL][COL], direcciones[11],letras[11],compararLetras[10][3],compararPalabras[10][20]; // nueva
+
+	srand(time(NULL)); // Generar semilla para todo el programa
+
+	llenarMatriz(mapa);
+
+	// Posicion incial, aleatorio para las filas
+	int posicionFilas = aleatorio(1, 5);
+	int posicionColumnas = 1;
+
+  
+	for (i = 0; i < 11; i++) {
+		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
+		moverPosicion(mapa, &posicionFilas, &posicionColumnas,&direcciones[i],&coordenadaX[i],&coordenadaY[i]);
+	}
+  
+  acomodarMatriz(mapa);
+  devolverLetras(mapa,coordenadaX, coordenadaY,letras); // se encarga de devolver el color en cada posicion de la matriz
+
+  
+
+	//pantallaMenu();
+  mostrarMatriz(mapa);
+	saltar(1);
+	mostrarMapa(mapa);
+
+  //concatena las letras
+  for(i=0;i<10;i++){
+      compararLetras[i][0] = direcciones[i]; 
+  }
+  
+  for(i=0;i<10;i++){
+     compararLetras[i][1] = letras[i];
+     compararLetras[i][2] = '\0';   
+  }
+  for(i=0;i<10;i++){
+    printf("%s ",compararLetras[i]); 
+  }
+  printf("\n");
+  //concatena palabras;
+  for(i=0;i<10;i++){
+    if(direcciones[i] == 'W'){
+      strcpy(compararPalabras[i],"SUBIR");
+    }
+    else if(direcciones[i] == 'S'){
+      strcpy(compararPalabras[i],"BAJAR");
+    }
+    else if(direcciones[i] == 'D'){
+      strcpy(compararPalabras[i],"DERECHA");
+    }
+    else if(direcciones[i] == 'Q'){
+      strcpy(compararPalabras[i],"DIAGONAL");
+    }
+  }
+  for(i=0; i<10;i++){
+    if(letras[i] == 'A'){
+      strcat(compararPalabras[i],"AZUL");
+    }
+    else if(letras[i] == 'R'){
+      strcat(compararPalabras[i],"ROJO");
+    }
+    else if(letras[i] == 'B'){
+      strcat(compararPalabras[i],"BLANCO");
+    }
+    else if(letras[i] == 'V'){
+      strcat(compararPalabras[i],"VERDE");
+    }
+  }
+
+  for(i=0;i<10;i++){
+    printf("%s \n",compararPalabras[i]); 
+  }
+
+
 }
