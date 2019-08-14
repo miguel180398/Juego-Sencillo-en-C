@@ -47,6 +47,10 @@ void convertirMayuscula(char [20][20]);
 
 void nivel1(); //NUEVO
 
+void pantallaPlantilla();
+void pantallaCargando();
+void pantallaPresentacion();
+
 int main() {
 
 	/*limpiar();
@@ -68,15 +72,15 @@ int main() {
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas,&posiciones[i],&coordenadaX[i],&coordenadaY[i]);
 	}
   acomodarMatriz(mapa);
-  
+
   devolverLetras(mapa,coordenadaX, coordenadaY,letra); // se encarga de devolver el color en cada posicion de la matriz
   for (i = 0; i < 10; i++){
 
-		printf("%c ",posiciones[i]); // nueva 
+		printf("%c ",posiciones[i]); // nueva
 	}
   printf("\n");
   for (i = 0; i < 10; i++){
-		printf("%c ",letra[i]); // nueva 
+		printf("%c ",letra[i]); // nueva
 	}
   printf("\n");
 	//pantallaMenu();
@@ -84,6 +88,9 @@ int main() {
 	saltar(1);
 	mostrarMapa(mapa);*/
 
+  pantallaPlantilla();
+  pantallaCargando();
+  pantallaPresentacion();
 
   nivel1();//NUEVO
 
@@ -181,7 +188,7 @@ void asignarPosiciones(char mapa[FIL][COL], int *posicionFilas, int *posicionCol
 
 	// X diagonal izquierda arriba
 	if (mapa[*posicionFilas-1][*posicionColumnas-1] != barrera && mapa[*posicionFilas-1][*posicionColumnas-1] != camino) mapa[*posicionFilas-1][*posicionColumnas-1] = posicion;
- 
+
 
 	// X diagonal dercha arriba
 	if (mapa[*posicionFilas-1][*posicionColumnas+1] != barrera && mapa[*posicionFilas-1][*posicionColumnas+1] != camino) mapa[*posicionFilas-1][*posicionColumnas+1] = posicion;
@@ -547,7 +554,7 @@ void mostrarMapa(char mapa[FIL][COL]){
    if(i== 5){imprimirColor("negro","cian","Q: DIAGONAL  / ");
   // espaciar(3);
    printf("   ");
-   imprimirColor("negro","verde","V: VERDE  ");} 
+   imprimirColor("negro","verde","V: VERDE  ");}
    saltar(1);
 
 	}
@@ -591,33 +598,33 @@ void nivel1(){
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
 
-  
+
 	for (i = 0; i < 11; i++) {
 		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
 		moverPosicion(mapa, &posicionFilas, &posicionColumnas,&direcciones[i],&coordenadaX[i],&coordenadaY[i]);
 	}
-  
+
   acomodarMatriz(mapa);
   devolverLetras(mapa,coordenadaX, coordenadaY,letras); // se encarga de devolver el color en cada posicion de la matriz
 
-  
+
 
 	//pantallaMenu();
   //mostrarMatriz(mapa);
-	
+
 
   //concatena las letras
   for(i=0;i<10;i++){
-      compararLetras[i][0] = direcciones[i]; 
+      compararLetras[i][0] = direcciones[i];
   }
-  
+
   for(i=0;i<10;i++){
      compararLetras[i][1] = letras[i];
-     compararLetras[i][2] = '\0';   
+     compararLetras[i][2] = '\0';
   }
   //imprimir resultado de las letras
   /*for(i=0;i<10;i++){
-    printf("%s ",compararLetras[i]); 
+    printf("%s ",compararLetras[i]);
   }*/
  // printf("\n");
   //concatena palabras;
@@ -651,7 +658,7 @@ void nivel1(){
   }
   //imprime resultado de las palabras
   /*for(i=0;i<10;i++){
-    printf("%s \n",compararPalabras[i]); 
+    printf("%s \n",compararPalabras[i]);
   }*/
 
   saltar(1);
@@ -679,12 +686,12 @@ void nivel1(){
       compararResultados[i][j] = compararResultados[i][j]-32;
     }
   }
-  
+
   for(i=0;i<10;i++){
     printf("%s\n",compararResultados[i]);
 
   }
-  
+
   // compara la decision
   char decision = 'v', decision2 = 'v';
   for(i=0;i<10;i++){
@@ -706,4 +713,880 @@ void nivel1(){
    printf("ganaste");
   else
    printf("perdiste");
+}
+
+void pantallaPlantilla() {
+  limpiar();
+
+	int i, j;
+
+  // Resolucion de la pantalla del terminal
+	int alto = 24, ancho = 80;
+
+  // Psocion del texto en la pantalla
+  int posi = 1, posj = 1;
+
+	for (i = 0; i < alto; i++) {
+		for (j = 0; j < ancho; j++) {
+  // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  // Letras ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  {
+      // Letra 'A'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+			if (i == posi && j == posj) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 1) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 2) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 1) {imprimirColor("azul","blanco","■");continue;}
+      if (i == posi + 1 && j == posj + 2) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 2) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'B'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 4) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 5) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 6) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 1 && j == posj + 4) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 5) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 6) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 4) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 5) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 6) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'C'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 8) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 9) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 10) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 8) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 10) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 2 && j == posj + 8) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 9) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 10) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'D'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 12) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 13) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 14) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 1 && j == posj + 12) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 14) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 12) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 13) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 14) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'E'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 16) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 17) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 18) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 16) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 17) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 16) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 17) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 18) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'F'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 20) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 21) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 22) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 20) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 21) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 20) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'G'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 24) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 25) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 26) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 24) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 26) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 24) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 25) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 26) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'H'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 28) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 30) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 28) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 29) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 30) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 28) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 30) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'I'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 32) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 33) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 34) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 33) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 32) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 33) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 34) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'J'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 36) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 37) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 38) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 37) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 36) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 37) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'K'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 40) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 42) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 40) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 42) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 1 && j == posj + 41) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 40) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 42) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'L'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 44) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 44) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 44) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 45) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 46) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'M'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌
+      if (i == posi && j == posj + 48) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi && j == posj + 49) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi && j == posj + 50) {imprimirColor("azul","blanco","▌");continue;}
+      if (i == posi + 1 && j == posj + 48) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 49) {imprimirColor("azul","blanco","▌");continue;}
+      if (i == posi + 1 && j == posj + 50) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 48) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 50) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'N'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 52) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 53) {imprimirColor("azul","blanco","▌");continue;}
+      if (i == posi && j == posj + 54) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 52) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 53) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi + 1 && j == posj + 54) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 52) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 54) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'O'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 56) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 57) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 58) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 56) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 58) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 56) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 57) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 58) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'P'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 60) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 61) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 62) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 60) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 61) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 62) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 60) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'Q'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 64) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 65) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 66) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 64) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 66) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi + 2 && j == posj + 64) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 65) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 66) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'R'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 68) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 69) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 70) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 68) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 69) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 70) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 68) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 70) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'S'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 72) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi && j == posj + 73) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 74) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 72) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 73) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 74) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 72) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 73) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'T'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 1) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 2) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 1) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 1) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'U'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 4) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 6) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 6) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 4) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 4) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 5) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 6) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'V'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 8) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 10) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi + 4 && j == posj + 9) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 10) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi + 5 && j == posj + 10) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'W'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 12) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 14) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi + 3 && j == posj + 15) {imprimirColor("azul","blanco","▌");continue;}
+      if (i == posi + 3 && j == posj + 17) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 13) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 14) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi + 4 && j == posj + 15) {imprimirColor("azul","blanco","▌");continue;}
+      if (i == posi + 4 && j == posj + 16) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 14) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 15) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'X'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 19) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 21) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 20) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 19) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 21) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'y'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 23) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 25) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 24) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 24) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'Z'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 27) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 28) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 29) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 27) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 5 && j == posj + 27) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 28) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 28) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 29) {imprimirColor("azul","blanco","▀");continue;}
+  }
+
+  // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  // Numeros ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  {
+      // Letra '1'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 31) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 3 && j == posj + 32) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 32) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 31) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 32) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 33) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '2'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 35) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 36) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 37) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 35) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 36) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 37) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 35) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 36) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 37) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '3'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 39) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 40) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 41) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 39) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 40) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 41) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 39) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 40) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 41) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '4'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 43) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 45) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 43) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 44) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 45) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 45) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '5'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 47) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 48) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 49) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 47) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 48) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 49) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 47) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 48) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 49) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '6'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 51) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 52) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 53) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 51) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 52) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 53) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 51) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 52) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 53) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '7'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 55) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 56) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 57) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 56) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 56) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '8'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 59) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 60) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 61) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 59) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 60) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 61) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 59) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 60) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 61) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '9'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 63) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 64) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 65) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 63) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 64) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 4 && j == posj + 65) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 65) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra '0'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 67) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 3 && j == posj + 68) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 3 && j == posj + 69) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 67) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 69) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 67) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 68) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 5 && j == posj + 69) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra ''
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 1) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 4 && j == posj + 1) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 5 && j == posj + 1) {imprimirColor("azul","blanco","▀");continue;}
+  }
+
+			imprimirColor("","blanco"," ");
+    }
+		saltar(1);
+	}
+}
+
+void pantallaCargando() {
+  limpiar();
+
+	int i, j, k;
+	int alto = 24, ancho = 80; // Resolucion de la pantalla del terminal
+  int posi = 5, posj = 24; // Psocion del texto en la pantalla
+
+  for (k = 0; k <= 29; k++) {
+  for (i = 0; i < alto; i++) {
+		for (j = 0; j < ancho; j++) {
+
+      // Letra 'C'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 1) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 2) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 2) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 2 && j == posj) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 1) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 2) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'A'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+			if (i == posi && j == posj + 4) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 5) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 6) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 4) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 5) {imprimirColor("azul","blanco","■");continue;}
+      if (i == posi + 1 && j == posj + 6) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 4) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 6) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'R'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 8) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 9) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 10) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 8) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 9) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 10) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 8) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 10) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'G'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 12) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 13) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 14) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 1 && j == posj + 12) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 14) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 12) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 13) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 14) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'A'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+			if (i == posi && j == posj + 16) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 17) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 18) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 16) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 17) {imprimirColor("azul","blanco","■");continue;}
+      if (i == posi + 1 && j == posj + 18) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 16) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 18) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'N'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 20) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 21) {imprimirColor("azul","blanco","▌");continue;}
+      if (i == posi && j == posj + 22) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 20) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 21) {imprimirColor("azul","blanco","▐");continue;}
+      if (i == posi + 1 && j == posj + 22) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 20) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 22) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'D'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 24) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 25) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 26) {imprimirColor("azul","blanco","▄");continue;}
+      if (i == posi + 1 && j == posj + 24) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 26) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 24) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 25) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 26) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Letra 'O'
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi && j == posj + 28) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi && j == posj + 29) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi && j == posj + 30) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 28) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 1 && j == posj + 30) {imprimirColor("azul","blanco","█");continue;}
+      if (i == posi + 2 && j == posj + 28) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 29) {imprimirColor("azul","blanco","▀");continue;}
+      if (i == posi + 2 && j == posj + 30) {imprimirColor("azul","blanco","▀");continue;}
+
+      // Barra de carga
+      // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+      if (i == posi + 3 && j == posj + 1) {
+        if (k > 0)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 2) {
+        if (k > 1)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 3) {
+        if (k > 2)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 4) {
+        if (k > 3)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 5) {
+        if (k > 4)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 6) {
+        if (k > 5)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 7) {
+        if (k > 6)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 8) {
+        if (k > 7)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 9) {
+        if (k > 8)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 10) {
+        if (k > 9)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 11) {
+        if (k > 10)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 12) {
+        if (k > 11)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 13) {
+        if (k > 12)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 14) {
+        if (k > 13)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 15) {
+        if (k > 14)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 16) {
+        if (k > 15)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 17) {
+        if (k > 16)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 18) {
+        if (k > 17)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 19) {
+        if (k > 18)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 20) {
+        if (k > 19)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 21) {
+        if (k > 20)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 22) {
+        if (k > 21)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 23) {
+        if (k > 22)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 24) {
+        if (k > 23)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 25) {
+        if (k > 24)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 26) {
+        if (k > 25)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 27) {
+        if (k > 26)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 28) {
+        if (k > 27)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+      if (i == posi + 3 && j == posj + 29) {
+        if (k > 28)
+          imprimirColor("azul","blanco","█");
+        else
+          imprimirColor("azul","blanco","▒");
+        continue;
+      }
+
+      imprimirColor("","blanco"," ");
+    }
+    saltar(1);
+  }
+  sleep(1);
+  limpiar();
+  }
+}
+
+void pantallaPresentacion() {
+  limpiar();
+
+	int i, j, k;
+	int alto = 24, ancho = 80; // Resolucion de la pantalla del terminal
+  int posi = 9, posj = 14; // Psocion del texto en la pantalla
+
+  char *color; // Color que varia k veces
+
+  for (k = 0; k <= 4; k++) {
+
+    if (k == 0) color = "verde";
+    if (k == 1) color = "azul";
+    if (k == 2) color = "rojo";
+    if (k == 3) color = "amarillo";
+    if (k == 4) color = "rosado";
+
+    for (i = 0; i < alto; i++) {
+      for (j = 0; j < ancho; j++) {
+
+        // Letra 'S'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj) {imprimirColor(color,"blanco","▄");continue;}
+        if (i == posi && j == posj + 1) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 2) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 1 && j == posj) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 1 && j == posj + 1) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 1 && j == posj + 2) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 1) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'M'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌
+        if (i == posi && j == posj + 4) {imprimirColor(color,"blanco","▐");continue;}
+        if (i == posi && j == posj + 5) {imprimirColor(color,"blanco","▐");continue;}
+        if (i == posi && j == posj + 6) {imprimirColor(color,"blanco","▌");continue;}
+        if (i == posi + 1 && j == posj + 4) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 5) {imprimirColor(color,"blanco","▌");continue;}
+        if (i == posi + 1 && j == posj + 6) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 4) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 6) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'A'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+  			if (i == posi && j == posj + 8) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 9) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 10) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 8) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 9) {imprimirColor(color,"blanco","■");continue;}
+        if (i == posi + 1 && j == posj + 10) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 8) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 10) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'R'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj + 12) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 13) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 14) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 12) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 13) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 14) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 12) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 14) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'T'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj + 16) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 17) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 18) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 1 && j == posj + 17) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 17) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'M'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌
+        if (i == posi && j == posj + 24) {imprimirColor(color,"blanco","▐");continue;}
+        if (i == posi && j == posj + 25) {imprimirColor(color,"blanco","▐");continue;}
+        if (i == posi && j == posj + 26) {imprimirColor(color,"blanco","▌");continue;}
+        if (i == posi + 1 && j == posj + 24) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 25) {imprimirColor(color,"blanco","▌");continue;}
+        if (i == posi + 1 && j == posj + 26) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 24) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 26) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'A'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+  			if (i == posi && j == posj + 28) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 29) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 30) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 28) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 29) {imprimirColor(color,"blanco","■");continue;}
+        if (i == posi + 1 && j == posj + 30) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 28) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 30) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'C'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj + 32) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 33) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 34) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 32) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 34) {imprimirColor(color,"blanco","▄");continue;}
+        if (i == posi + 2 && j == posj + 32) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 33) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 34) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'H'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj + 36) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 38) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 36) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 37) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 1 && j == posj + 38) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 36) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 38) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'I'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj + 40) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 41) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 42) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 1 && j == posj + 41) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 40) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 41) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 42) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'N'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj + 44) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 45) {imprimirColor(color,"blanco","▌");continue;}
+        if (i == posi && j == posj + 46) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 44) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 45) {imprimirColor(color,"blanco","▐");continue;}
+        if (i == posi + 1 && j == posj + 46) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 2 && j == posj + 44) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 46) {imprimirColor(color,"blanco","▀");continue;}
+
+        // Letra 'E'
+        // ░ ▒ ▓ ▲ ▼ ► ◄ ■ █ ▀ ▄ ▌ ▐
+        if (i == posi && j == posj + 48) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi && j == posj + 49) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi && j == posj + 50) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 1 && j == posj + 48) {imprimirColor(color,"blanco","█");continue;}
+        if (i == posi + 1 && j == posj + 49) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 48) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 49) {imprimirColor(color,"blanco","▀");continue;}
+        if (i == posi + 2 && j == posj + 50) {imprimirColor(color,"blanco","▀");continue;}
+
+        imprimirColor("","blanco"," ");
+      }
+      saltar(1);
+    }
+    sleep(1);
+    limpiar();
+  }
 }
