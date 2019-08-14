@@ -14,6 +14,7 @@ Notas:
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
+#include <ctype.h>
 
 #define FIL 7
 #define COL 14
@@ -41,6 +42,8 @@ void pantallaMenu();
 void mostrarMapa(char [FIL][COL]); //nueva
 
 void devolverLetras(char [FIL][COL],int *, int *,char *); // nueva
+
+void convertirMayuscula(char [20][20]);
 
 void nivel1(); //NUEVO
 
@@ -568,12 +571,17 @@ void devolverLetras(char mapa[FIL][COL], int *coordenaX, int *coordenadaY,char *
 
 
 
+
+
+
+
+
 void nivel1(){
 
   limpiar();
 
-	int i,j,coordenadaX[11],coordenadaY[11]; //nueva
-	char mapa[FIL][COL], direcciones[11],letras[11],compararLetras[10][3],compararPalabras[10][20]; // nueva
+	int i,j,k=0,coordenadaX[11],coordenadaY[11]; //nueva
+	char mapa[FIL][COL], direcciones[11],letras[11],compararLetras[10][3],compararPalabras[10][20],compararResultados[10][20],guardar[10][20]; // nueva
 
 	srand(time(NULL)); // Generar semilla para todo el programa
 
@@ -595,9 +603,8 @@ void nivel1(){
   
 
 	//pantallaMenu();
-  mostrarMatriz(mapa);
-	saltar(1);
-	mostrarMapa(mapa);
+  //mostrarMatriz(mapa);
+	
 
   //concatena las letras
   for(i=0;i<10;i++){
@@ -608,10 +615,11 @@ void nivel1(){
      compararLetras[i][1] = letras[i];
      compararLetras[i][2] = '\0';   
   }
-  for(i=0;i<10;i++){
+  //imprimir resultado de las letras
+  /*for(i=0;i<10;i++){
     printf("%s ",compararLetras[i]); 
-  }
-  printf("\n");
+  }*/
+ // printf("\n");
   //concatena palabras;
   for(i=0;i<10;i++){
     if(direcciones[i] == 'W'){
@@ -641,10 +649,61 @@ void nivel1(){
       strcat(compararPalabras[i],"VERDE");
     }
   }
-
-  for(i=0;i<10;i++){
+  //imprime resultado de las palabras
+  /*for(i=0;i<10;i++){
     printf("%s \n",compararPalabras[i]); 
+  }*/
+
+  saltar(1);
+	mostrarMapa(mapa);
+  //almacenar datos
+  for(i=0;i<10;i++){
+    printf("intruduzca la instruccion(%d/%d)",i+1,10);
+    scanf("%[^\n]",guardar[i]);
+    getchar();
+  }
+  //quita espacios
+  for(i=0;i<10;i++){
+    for(j=0;guardar[i][j]!='\0';j++){
+      if(guardar[i][j]!=' '){
+       compararResultados[i][k] =  guardar[i][j];
+       k++;
+      }
+    }
+    compararResultados[i][k] = '\0';
+    k=0;
+  }
+  //convierte en mayuscula
+  for(i=0;i<10;i++){
+    for(j=0;compararResultados[i][j]!='\0';j++){
+      compararResultados[i][j] = compararResultados[i][j]-32;
+    }
+  }
+  
+  for(i=0;i<10;i++){
+    printf("%s\n",compararResultados[i]);
+
+  }
+  
+  // compara la decision
+  char decision = 'v', decision2 = 'v';
+  for(i=0;i<10;i++){
+    for(j=0;compararResultados[i][j]!='\0';j++){
+
+      if(compararResultados[i][j] == compararPalabras[i][j]||compararResultados[i][j] == compararLetras[i][j]){
+        decision = 'v';
+      }
+      else{
+        decision = 'f';
+        break;
+      }
+    }
+    if(decision == 'f') break;
   }
 
-
+  limpiar();
+  if(decision == 'v')
+   printf("ganaste");
+  else
+   printf("perdiste");
 }
