@@ -53,44 +53,10 @@ void pantallaPresentacion();
 
 int main() {
 
-	/*limpiar();
 
-	int i,j,coordenadaX[11],coordenadaY[11]; //nueva
-	char mapa[FIL][COL], posiciones[11],letra[11]; // nueva
-
-	srand(time(NULL)); // Generar semilla para todo el programa
-
-	llenarMatriz(mapa);
-
-	// Posicion incial, aleatorio para las filas
-	int posicionFilas = aleatorio(1, 5);
-	int posicionColumnas = 1;
-
-
-	for (i = 0; i < 11; i++) {
-		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
-		moverPosicion(mapa, &posicionFilas, &posicionColumnas,&posiciones[i],&coordenadaX[i],&coordenadaY[i]);
-	}
-  acomodarMatriz(mapa);
-
-  devolverLetras(mapa,coordenadaX, coordenadaY,letra); // se encarga de devolver el color en cada posicion de la matriz
-  for (i = 0; i < 10; i++){
-
-		printf("%c ",posiciones[i]); // nueva
-	}
-  printf("\n");
-  for (i = 0; i < 10; i++){
-		printf("%c ",letra[i]); // nueva
-	}
-  printf("\n");
-	//pantallaMenu();
-  mostrarMatriz(mapa);
-	saltar(1);
-	mostrarMapa(mapa);*/
-
-  pantallaPlantilla();
-  pantallaCargando();
-  pantallaPresentacion();
+  //pantallaPlantilla();
+  //pantallaCargando();
+  //pantallaPresentacion();
 
   nivel1();//NUEVO
 
@@ -531,10 +497,51 @@ void mostrarMapa(char mapa[FIL][COL]){
 		for(j = 0; j < COL; j++) {
 			if (mapa[i][j] == '/') imprimirColor("azul","blanco","▒");
       else if(mapa[i][j]=='A') imprimirColor("azul","azul","♦");
-		  else if(mapa[i][j]=='B') imprimirColor("blanco","blanco","☺");
-      else if(mapa[i][j]=='R') imprimirColor("rojo","rojo","☼");
-			else if(mapa[i][j]=='V') imprimirColor("verde","verde","♣");
-			else if(mapa[i][j] == '-') imprimirColor("gris","gris","■");
+		  else if(mapa[i][j]=='B') imprimirColor("blanco","blanco","♦");
+      else if(mapa[i][j]=='R') imprimirColor("rojo","rojo","♦");
+			else if(mapa[i][j]=='V') imprimirColor("verde","verde","♦");
+			else if(mapa[i][j] == '-') imprimirColor("gris","gris"," ");
+
+		}
+   printf("   ");
+   if(i == 2){ imprimirColor("negro","amarillo","W: SUBIR     ^ ");
+   //espaciar(3);
+   printf("   ");
+   imprimirColor("negro","azul","A: AZUL   ");}
+   if(i== 3){ imprimirColor("negro","cian","S: BAJAR     v ");
+   //espaciar(3);
+   printf("   ");
+   imprimirColor("negro","rojo","R: ROJO   ");}
+   if(i== 4){imprimirColor("negro","amarillo","D: DERECHA   > ");
+   //espaciar(3);
+   printf("   ");
+   imprimirColor("negro","blanco","B: BLANCO ");}
+   //espaciar(e);
+   if(i== 5){imprimirColor("negro","cian","Q: DIAGONAL  / ");
+  // espaciar(3);
+   printf("   ");
+   imprimirColor("negro","verde","V: VERDE  ");}
+   saltar(1);
+
+	}
+
+}
+
+void mostrarMapaCoordenadas(char mapa[FIL][COL],int *coordenadaX, int *coordenadaY){
+
+	int i, j,fila=1,bajar=1;
+
+	for(i = 0; i < FIL; i++) {
+    //espaciar(15);
+		printf("               ");
+		for(j = 0; j < COL; j++) {
+			if (mapa[i][j] == '/') imprimirColor("azul","blanco","▒");
+      else if(i== *coordenadaX && j == *coordenadaY) imprimirColor("cian","negro","☺");
+      else if(mapa[i][j]=='A') imprimirColor("azul","azul","♦");
+		  else if(mapa[i][j]=='B') imprimirColor("blanco","blanco","♦");
+      else if(mapa[i][j]=='R') imprimirColor("rojo","rojo","♦");
+			else if(mapa[i][j]=='V') imprimirColor("verde","verde","♦");
+			else if(mapa[i][j] == '-') imprimirColor("gris","gris"," ");
 
 		}
    printf("   ");
@@ -577,12 +584,6 @@ void devolverLetras(char mapa[FIL][COL], int *coordenaX, int *coordenadaY,char *
 }
 
 
-
-
-
-
-
-
 void nivel1(){
 
   limpiar();
@@ -597,7 +598,8 @@ void nivel1(){
 	// Posicion incial, aleatorio para las filas
 	int posicionFilas = aleatorio(1, 5);
 	int posicionColumnas = 1;
-
+  int posicionX = posicionFilas;
+  int posicionY = 1;
 
 	for (i = 0; i < 11; i++) {
 		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
@@ -662,10 +664,12 @@ void nivel1(){
   }*/
 
   saltar(1);
-	mostrarMapa(mapa);
+	mostrarMapaCoordenadas(mapa,&posicionX,&posicionY);
+
   //almacenar datos
   for(i=0;i<10;i++){
-    printf("intruduzca la instruccion(%d/%d)",i+1,10);
+    imprimirColor("negro","blanco","Intruduzca la Instruccion");
+    printf("(%d/%d):",i+1,10);
     scanf("%[^\n]",guardar[i]);
     getchar();
   }
@@ -709,8 +713,14 @@ void nivel1(){
   }
 
   limpiar();
-  if(decision == 'v')
-   printf("ganaste");
+  if(decision == 'v'){
+
+   for(i=0;i<10;i++){
+     mostrarMapaCoordenadas(mapa,&coordenadaX[i],&coordenadaY[i]);
+     sleep(1);
+     limpiar();
+   }
+  }
   else
    printf("perdiste");
 }
@@ -1430,7 +1440,7 @@ void pantallaCargando() {
     }
     saltar(1);
   }
-  sleep(1);
+  usleep(200*1000);
   limpiar();
   }
 }
