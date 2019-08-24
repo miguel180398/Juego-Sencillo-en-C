@@ -39,13 +39,14 @@ int leerTecla(void);
 // Pantallas (interfaz)
 void pantallaMenu();
 
-void mostrarMapa(char [FIL][COL]); //nueva
+void mostrarMapa(char [FIL][COL]); 
 
-void devolverLetras(char [FIL][COL],int *, int *,char *); // nueva
+void devolverLetras(char [FIL][COL],int *, int *,char *); 
 
 void convertirMayuscula(char [20][20]);
 
-void nivel1(); //NUEVO
+void nivel1();
+void nivelv1();  
 
 void pantallaPlantilla();
 void pantallaCargando();
@@ -58,8 +59,8 @@ int main() {
   //pantallaCargando();
   //pantallaPresentacion();
 
-  nivel1();//NUEVO
-
+  //nivel1();//NUEVO
+  nivelv1();
 
 	return 0;
 }
@@ -715,16 +716,167 @@ void nivel1(){
   limpiar();
   if(decision == 'v'){
 
-   for(i=0;i<10;i++){
-     mostrarMapaCoordenadas(mapa,&coordenadaX[i],&coordenadaY[i]);
-     sleep(1);
-     limpiar();
-   }
+    mostrarMapaCoordenadas(mapa,&posicionX,&posicionY);
+    sleep(1);
+    limpiar();  
+ 
+    for(i=0;i<10;i++){
+      mostrarMapaCoordenadas(mapa,&coordenadaX[i],&coordenadaY[i]);
+      sleep(1);
+      limpiar();
+    }
   }
   else
    printf("perdiste");
 }
 
+void nivelv1(){
+
+  limpiar();
+
+	int i,j,k=0,coordenadaX[11],coordenadaY[11]; //nueva
+	char mapa[FIL][COL], direcciones[11],letras[11],compararLetras[10][3],compararPalabras[10][20],compararResultados[10][20],guardar[10][20]; // nueva
+
+	srand(time(NULL)); // Generar semilla para todo el programa
+
+	llenarMatriz(mapa);
+
+	// Posicion incial, aleatorio para las filas
+	int posicionFilas = aleatorio(1, 5);
+	int posicionColumnas = 1;
+  int posicionX = posicionFilas;
+  int posicionY = 1;
+
+	for (i = 0; i < 11; i++) {
+		asignarPosiciones(mapa, &posicionFilas, &posicionColumnas);
+		moverPosicion(mapa, &posicionFilas, &posicionColumnas,&direcciones[i],&coordenadaX[i],&coordenadaY[i]);
+	}
+
+  acomodarMatriz(mapa);
+  devolverLetras(mapa,coordenadaX, coordenadaY,letras); // se encarga de devolver el color en cada posicion de la matriz
+
+
+
+	//pantallaMenu();
+  //mostrarMatriz(mapa);
+
+
+  //concatena las letras
+  for(i=0;i<10;i++){
+      compararLetras[i][0] = direcciones[i];
+  }
+
+  for(i=0;i<10;i++){
+     compararLetras[i][1] = letras[i];
+     compararLetras[i][2] = '\0';
+  }
+  //imprimir resultado de las letras
+  /*for(i=0;i<10;i++){
+    printf("%s ",compararLetras[i]);
+  }*/
+ // printf("\n");
+  //concatena palabras;
+  for(i=0;i<10;i++){
+    if(direcciones[i] == 'W'){
+      strcpy(compararPalabras[i],"SUBIR");
+    }
+    else if(direcciones[i] == 'S'){
+      strcpy(compararPalabras[i],"BAJAR");
+    }
+    else if(direcciones[i] == 'D'){
+      strcpy(compararPalabras[i],"DERECHA");
+    }
+    else if(direcciones[i] == 'Q'){
+      strcpy(compararPalabras[i],"DIAGONAL");
+    }
+  }
+  for(i=0; i<10;i++){
+    if(letras[i] == 'A'){
+      strcat(compararPalabras[i],"AZUL");
+    }
+    else if(letras[i] == 'R'){
+      strcat(compararPalabras[i],"ROJO");
+    }
+    else if(letras[i] == 'B'){
+      strcat(compararPalabras[i],"BLANCO");
+    }
+    else if(letras[i] == 'V'){
+      strcat(compararPalabras[i],"VERDE");
+    }
+  }
+  //imprime resultado de las palabras
+  /*for(i=0;i<10;i++){
+    printf("%s \n",compararPalabras[i]);
+  }*/
+
+  saltar(1);
+	mostrarMapaCoordenadas(mapa,&posicionX,&posicionY);
+
+
+  char decision = 'v', decision2 = 'v';
+
+
+  limpiar();
+  mostrarMapaCoordenadas(mapa,&posicionX,&posicionY);
+  sleep(1);
+
+  //almacenar datos
+  for(i=0;i<10;i++){
+
+    imprimirColor("negro","blanco","Intruduzca la Instruccion");
+    printf("(%d/%d):",i+1,10);
+    scanf("%[^\n]",guardar[i]);
+    getchar();
+  
+    //quita espacios
+    for(j=0;guardar[i][j]!='\0';j++){
+      if(guardar[i][j]!=' '){
+       compararResultados[i][k] =  guardar[i][j];
+       k++;
+      }
+    }
+    compararResultados[i][k] = '\0';
+    k=0;
+  
+    //convierte en mayuscula
+    for(j=0;compararResultados[i][j]!='\0';j++){
+      compararResultados[i][j] = compararResultados[i][j]-32;
+    }
+  
+   //compara la decision
+
+    for(j=0;compararResultados[i][j]!='\0';j++){
+
+      if(compararResultados[i][j] == compararPalabras[i][j]||compararResultados[i][j] == compararLetras[i][j]){
+        limpiar();
+        mostrarMapaCoordenadas(mapa,&coordenadaX[i],&coordenadaY[i]);
+        sleep(1);
+      }
+      else{
+        decision = 'f';
+        break;
+      }
+    }
+    if(decision == 'f') break;
+  }
+ 
+
+  //limpiar();
+  /*if(decision == 'v'){
+
+    mostrarMapaCoordenadas(mapa,&posicionX,&posicionY);
+    sleep(1);
+    limpiar();  
+ 
+    for(i=0;i<10;i++){
+      mostrarMapaCoordenadas(mapa,&coordenadaX[i],&coordenadaY[i]);
+      sleep(1);
+      limpiar();
+    }
+  }
+  else
+   printf("perdiste");*/
+}
 void pantallaPlantilla() {
   limpiar();
 
